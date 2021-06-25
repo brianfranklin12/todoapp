@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { auth } from './firebase';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
+import { createStackNavigator } from '@react-nativation/stack';
+
+import LoginScreen from './screens/sessions/LoginScreen';
 
 
 export default function App() {
