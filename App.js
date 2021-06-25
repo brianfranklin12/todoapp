@@ -1,10 +1,13 @@
+import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { auth } from './firebase';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-nativation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import LoginScreen from './screens/sessions/LoginScreen';
+
+const Stack = createStackNavigator();
 
 
 export default function App() {
@@ -19,24 +22,33 @@ export default function App() {
   });
 
   return (
-    <View style={styles.container}>
-      <NavigationContainer>
+      <NavigationContainer theme={DefaultTheme}>
         {signedIn
         ? (
           <Text>Signed in</Text>
         ) : (
-          <Text>Not signed in</Text>
+          <>
+            <StatusBar style="light" />
+            <Stack.Navigator
+              mode="card"
+              screenOptions={{
+              }}
+            >
+              <Stack.Screen 
+                name="signIn"
+                component={LoginScreen}
+                options={{
+                  title: "Sign In",
+                  headerStyle: {
+                    backgroundColor: '#29434e',
+                    borderBottomColor: '#29434e',
+                  },
+                  headerTintColor: '#fff',
+                }}
+              />
+            </Stack.Navigator>
+          </>
         )}
       </NavigationContainer>
-    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
