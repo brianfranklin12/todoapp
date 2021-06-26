@@ -2,15 +2,18 @@ import React, { useState, useEffect } from "react";
 import { ScrollView, View } from "react-native";
 import { List, Divider, FAB } from "react-native-paper";
 
-import { db } from '../../firebase';
+import { db, auth } from '../../firebase';
 import styles from "./styles"
 
 
 export default function ViewAll({ navigation }) {
   const [todos, setTodos] = useState([]);
+  const user = auth.currentUser;
 
   useEffect(() => {
-    const ref = db.collection('todos');
+    const ref = db.collection('todos')
+    .where('belongsTo', '==', user.uid)
+    .orderBy('createdAt', 'desc');
     ref.onSnapshot(query => {
       const objs = [];
       query.forEach(doc => {
@@ -23,6 +26,18 @@ export default function ViewAll({ navigation }) {
     });
   }, [])
 
+  const handleComplete = async (todo) => {
+    const ref = db.collection('todos').doc(todo.id);
+
+    try {
+      await ref.set({
+        completed: !todo.completed,
+      }, { merge: true });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <ScrollView>
@@ -31,6 +46,9 @@ export default function ViewAll({ navigation }) {
             <View key={todo.id}>
               <List.Item 
                 title={todo.task}
+                onPress={() => handleComplete(todo)}
+                titleStyle={todo.completed
+                ? styles.complete : styles.notComplete}
               />
               <Divider />
             </View>
