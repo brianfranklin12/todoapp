@@ -6,7 +6,7 @@ import { db } from '../../firebase';
 import styles from "./styles"
 
 
-export default function ViewAll() {
+export default function ViewAll({ navigation }) {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
@@ -25,22 +25,23 @@ export default function ViewAll() {
 
   return (
     <>
-    <ScrollView>
-      <View>
-        {todos.map(todo => (
-          <View key={todo.id}>
-            <List.Item 
-              title={todo.task}
-            />
-            <Divider />
-          </View>
-        ))}
-      </View>
-    </ScrollView>
-    <FAB 
-      style={styles.fab}
-      icon="plus"
-    />
+      <ScrollView>
+        <View>
+          {todos.map(todo => (
+            <View key={todo.id}>
+              <List.Item 
+                title={todo.task}
+              />
+              <Divider />
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+      <FAB 
+        style={styles.fab}
+        icon="plus"
+        onPress={() => navigation.navigate('addTodo')}
+      />
     </>
   )
 }
