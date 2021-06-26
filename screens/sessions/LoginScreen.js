@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { TextInput, Button } from 'react-native-paper'
 const LoginScreen = () => {
-  const { control, handleSubmit, errors } = useForm();
+  const { control, handleSubmit, formState: { errors } } = useForm();
   const onSubmit = (data) => {
     console.log(data);
   }
@@ -11,12 +11,12 @@ const LoginScreen = () => {
     <View>
       <Controller
         control={control}
-        render={({ onChange, onBlur, value }) => (
+        render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             label="Email"
             mode="outlined"
             onBlur={onBlur}
-            onChangeText={(value) => onChange(value)}
+            onChangeText={onChange}
             value={value}
           />
         )}
@@ -25,17 +25,17 @@ const LoginScreen = () => {
         defaultValue=""
       />
       <View>
-        {/* {errors.email && <Text>You must fill in your email</Text>} */}
+        {errors.email && <Text>You must fill in your email</Text>}
       </View>
       <Controller
         control={control}
-        render={({ onChange, onBlur, value }) => (
+        render={({ field: { onChange, onBlur, value } }) => (
           <TextInput
             label="Password"
             mode="outlined"
             secureTextEntry
             onBlur={onBlur}
-            onChangeText={(value) => onChange(value)}
+            onChangeText={onChange}
             value={value}
           />
         )}
@@ -44,7 +44,7 @@ const LoginScreen = () => {
         defaultValue=""
       />
       <View>
-        {/* {errors.password && <Text>You must fill in your password</Text>} */}
+        {errors.password && <Text>You must fill in your password</Text>}
       </View>
       <View>
         <Button
