@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { ScrollView, View } from "react-native";
-import { List, Divider } from "react-native-paper";
+import { List, Divider, FAB } from "react-native-paper";
 
 import { db } from '../../firebase';
+import styles from "./styles"
 
 
 export default function ViewAll() {
@@ -23,6 +24,7 @@ export default function ViewAll() {
   }, [])
 
   return (
+    <>
     <ScrollView>
       <View>
         {todos.map(todo => (
@@ -35,5 +37,10 @@ export default function ViewAll() {
         ))}
       </View>
     </ScrollView>
+    <FAB 
+      style={styles.fab}
+      icon="plus"
+    />
+    </>
   )
 }
