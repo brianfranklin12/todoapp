@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import ViewAll from '../todos/ViewAll';
 import AddTodo from '../todos/AddTodo';
 
