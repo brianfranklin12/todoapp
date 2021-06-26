@@ -1,14 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { Text } from 'react-native';
+import { Text, SafeAreaView } from 'react-native';
 import { auth } from './firebase';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { FontAwesome } from '@expo/vector-icons';
+import TodosTab from './screens/sessions/TodosTab';
+import SettingsTab from './screens/sessions/SettingsTab';
+
 
 import LoginScreen from './screens/sessions/LoginScreen';
 import RegisterScreen from './screens/sessions/RegisterScreen';
+import { rotate } from 'jimp';
 
 const Stack = createStackNavigator();
+const Tab = createBottomTabNavigator();
 
 
 export default function App() {
@@ -26,7 +33,54 @@ export default function App() {
       <NavigationContainer theme={DefaultTheme}>
         {signedIn
         ? (
-          <Text>Signed in</Text>
+          <SafeAreaView style={{flex: 1, backgroundColor: '#29434e'}}>
+            <Tab.Navigator
+              screenOptions={( { route }) => ({
+                tabBarIcon: ({ color, size }) => {
+                  if (route.name === 'todos') {
+                    return (
+                      <FontAwesome 
+                        name="list-ul"
+                        size={size}
+                        color={color}
+                      />
+                    )
+                  }
+                  if (route.name === 'settings') {
+                    return (
+                      <FontAwesome 
+                        name="cogs"
+                        size={size}
+                        color={color}
+                      />
+                    )
+                  }
+                },
+              })}
+              tabBarOptions={{
+                activeTintColor: 'white',
+                inactiveTintColor: '#819ca9',
+                  style: {
+                backgroundColor: '#29434e'
+                }
+              }}
+            >
+              <Tab.Screen 
+                name="todos"
+                component={TodosTab}
+                options={{
+                  title: 'Todos'
+                }}
+              />
+              <Tab.Screen 
+                name="settings"
+                component={SettingsTab}
+                options={{
+                  title: 'Settings'
+                }}
+              />
+            </Tab.Navigator>
+          </SafeAreaView>
         ) : (
           <>
             <StatusBar style="light" />
